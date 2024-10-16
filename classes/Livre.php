@@ -5,22 +5,24 @@
  */
 class Livre
 {
-	private string $titre ;
+	private string $titre;
 	private int $nbDePages;
 	private DateTime $dateDeParution;
 	private float $prix;
 	private Auteur $auteur;
+
 	/**
 	 * déclaration du constructeur
 	 */
 
-	public function __construct(string $titre, int $nbDePages,string $dateDeParution,float $prix, Auteur $auteur)
+	public function __construct(string $titre, int $nbDePages, string $dateDeParution, float $prix, Auteur $auteur)
 	{
 		$this->titre = $titre;
-		$this ->nbDePages = $nbDePages;
-		$this ->dateDeParution = new DateTime($dateDeParution);
-		$this ->prix = $prix;
-		$this ->auteur = $auteur;
+		$this->nbDePages = $nbDePages;
+		$this->dateDeParution = new DateTime($dateDeParution);
+		$this->prix = $prix;
+		$this->auteur = $auteur;
+		$this->auteur->addLivre($this);
 	}
 
 	/**
@@ -35,18 +37,6 @@ class Livre
 	public function setNbDePages($nbDePages)
 	{
 		$this->nbDePages = $nbDePages;
-
-		return $this;
-	}
-
-	public function getAuteur(): Auteur
-	{
-		return $this->auteur;
-	}
-
-	public function setAuteur(Auteur $auteur)
-	{
-		$this->auteur = $auteur;
 
 		return $this;
 	}
@@ -74,22 +64,25 @@ class Livre
 
 		return $this;
 	}
-  
- 
-	public function getDetailsLivre(){
-		return
-		$this->nbDePages . ' pages / ' . $this->prix;
-		
-	}
-	 public function getInfoslivre(){
-		return $this->getNbDePages() ."  pages /  ". $this->getPrix() ." € . <br> ";
-	 }
-
-	public function __tostring()
+	public function getAuteur(): Auteur
 	{
-		return  "" . $this->titre . " (" . $this->dateDeParution->format('Y') . ") :  " ;
+		return $this->auteur;
 	}
-		
-};
 
- 
+	public function setAuteur(Auteur $auteur)
+	{
+		$this->auteur = $auteur;
+
+		return $this;
+	}
+	   
+	public function getInfoslivre()
+	{
+		return $this->getNbDePages() . "  pages /  " . $this->getPrix() . " €  <br> ";
+	}
+
+	public function __toString()
+	{
+		return  "" . $this->titre . " (" . $this->dateDeParution->format('Y') . ") :  " . $this->getInfoslivre();
+	}
+};
